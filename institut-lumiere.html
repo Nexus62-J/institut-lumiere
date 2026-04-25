@@ -1,0 +1,2568 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Institut Lumière · Beauté & Bien-être · Bordeaux</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Jost:wght@200;300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --sauge: #2D4A3E;
+      --sauge2: #243D33;
+      --sauge3: #1C3028;
+      --or: #D4A853;
+      --or-clair: #E8C278;
+      --or-pale: #F5E6C8;
+      --ivoire: #FAF7F2;
+      --ivoire2: #F2EDE4;
+      --vert-clair: #E8F0EC;
+      --charcoal: #2C2C2C;
+      --gris: #7A7A6A;
+      --gris2: #9A9A8A;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--ivoire);
+      color: var(--charcoal);
+      font-family: 'Jost', sans-serif;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* ===== CURSEUR MAGNÉTIQUE FLEUR ===== */
+    .cursor-petal {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s;
+    }
+
+    .cursor-petal::before,
+    .cursor-petal::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: var(--or);
+      width: 8px;
+      height: 8px;
+      transition: all 0.3s;
+    }
+
+    .cursor-petal::before {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .cursor-petal::after {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .petal2 {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 9998;
+      transform: rotate(90deg);
+    }
+
+    .petal2::before,
+    .petal2::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(212, 168, 83, 0.5);
+      width: 8px;
+      height: 8px;
+      transition: all 0.3s;
+    }
+
+    .petal2::before {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .petal2::after {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .cursor-dot {
+      position: fixed;
+      width: 5px;
+      height: 5px;
+      background: var(--sauge);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transition: transform 0.1s;
+    }
+
+    .cursor-petal.big::before,
+    .cursor-petal.big::after {
+      width: 12px;
+      height: 12px;
+    }
+
+    .petal2.big::before,
+    .petal2.big::after {
+      width: 12px;
+      height: 12px;
+      opacity: 0.6;
+    }
+
+    /* ===== PAGE SYSTEM ===== */
+    .page {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 26px 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.5s;
+    }
+
+    nav.scrolled {
+      background: rgba(250, 247, 242, 0.96);
+      backdrop-filter: blur(20px);
+      padding: 16px 70px;
+      border-bottom: 1px solid rgba(45, 74, 62, 0.1);
+      box-shadow: 0 2px 30px rgba(45, 74, 62, 0.06);
+    }
+
+    .nav-logo {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 4px;
+      color: var(--sauge);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--or);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(44, 44, 44, 0.6);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 300;
+      transition: color 0.3s;
+      cursor: none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active-link {
+      color: var(--sauge);
+    }
+
+    .nav-reserve {
+      background: var(--sauge);
+      color: var(--ivoire);
+      padding: 11px 28px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 400;
+      text-decoration: none;
+      cursor: none;
+      transition: all 0.3s;
+      border: 2px solid var(--sauge);
+    }
+
+    .nav-reserve:hover {
+      background: transparent;
+      color: var(--sauge);
+    }
+
+    /* ===== HERO ===== */
+    #hero-section {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #nature-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1600&q=85') center/cover no-repeat;
+      filter: brightness(0.45) saturate(0.8);
+      transform: scale(1.05);
+      transition: transform 10s ease;
+    }
+
+    .hero-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: radial-gradient(ellipse 80% 100% at 30% 50%, rgba(45, 74, 62, 0.4) 0%, rgba(28, 48, 40, 0.7) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 0 70px;
+      max-width: 750px;
+    }
+
+    .hero-pretag {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .htag-line {
+      width: 35px;
+      height: 1px;
+      background: var(--or);
+    }
+
+    .htag-txt {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--or);
+      font-weight: 300;
+    }
+
+    .hero-h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(50px, 7vw, 90px);
+      font-weight: 400;
+      line-height: 1.08;
+      color: #FAF7F2;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.6s forwards;
+    }
+
+    .hero-h1 em {
+      font-style: italic;
+      color: var(--or);
+    }
+
+    .hero-p {
+      font-size: 16px;
+      font-weight: 200;
+      color: rgba(250, 247, 242, 0.7);
+      line-height: 1.9;
+      max-width: 460px;
+      margin-bottom: 50px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.9s 1s forwards;
+    }
+
+    .btn-or {
+      background: var(--or);
+      color: var(--sauge3);
+      padding: 15px 36px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: none;
+      transition: all 0.3s;
+    }
+
+    .btn-or:hover {
+      background: var(--or-clair);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(212, 168, 83, 0.25);
+    }
+
+    .btn-lien {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.7);
+      text-decoration: none;
+      cursor: none;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-lien::after {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.3s;
+    }
+
+    .btn-lien:hover {
+      color: var(--or);
+    }
+
+    .btn-lien:hover::after {
+      width: 50px;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      right: 70px;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeIn 1s 1.4s forwards;
+    }
+
+    .hscroll-txt {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(250, 247, 242, 0.5);
+      font-weight: 300;
+      writing-mode: vertical-rl;
+    }
+
+    .hscroll-bar {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--or), transparent);
+      animation: scrollAnim 2s 1.5s infinite;
+    }
+
+    .hero-badges {
+      position: absolute;
+      bottom: 50px;
+      left: 70px;
+      z-index: 3;
+      display: flex;
+      gap: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 1.2s forwards;
+    }
+
+    .hbadge {
+      background: rgba(250, 247, 242, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212, 168, 83, 0.25);
+      padding: 16px 22px;
+      text-align: center;
+    }
+
+    .hbadge-num {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--or);
+      display: block;
+      line-height: 1;
+    }
+
+    .hbadge-lbl {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(250, 247, 242, 0.6);
+      display: block;
+      margin-top: 5px;
+      font-weight: 300;
+    }
+
+    /* ===== SECTIONS COMMUNES ===== */
+    .stag {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--or);
+      font-weight: 300;
+      display: block;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(32px, 4vw, 50px);
+      font-weight: 400;
+      color: var(--sauge);
+      line-height: 1.2;
+    }
+
+    .section-title em {
+      font-style: italic;
+    }
+
+    /* ===== À PROPOS ===== */
+    .section-apropos {
+      padding: 140px 70px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+      background: var(--ivoire);
+    }
+
+    .apropos-img-wrap {
+      position: relative;
+    }
+
+    .apropos-img-frame {
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      position: relative;
+    }
+
+    .apropos-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .apropos-img-wrap:hover img {
+      transform: scale(1.04);
+    }
+
+    .apropos-img-deco {
+      position: absolute;
+      top: -18px;
+      left: -18px;
+      width: 70%;
+      height: 70%;
+      border: 1px solid rgba(212, 168, 83, 0.3);
+      z-index: -1;
+    }
+
+    .apropos-badge {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background: var(--sauge);
+      color: var(--ivoire);
+      padding: 22px 28px;
+    }
+
+    .ab-num {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--or);
+      display: block;
+      line-height: 1;
+    }
+
+    .ab-lbl {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 6px;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.7);
+    }
+
+    .apropos-txt p {
+      font-size: 15px;
+      font-weight: 200;
+      color: var(--gris);
+      line-height: 1.9;
+      margin-bottom: 18px;
+    }
+
+    .apropos-sep {
+      width: 55px;
+      height: 1px;
+      background: var(--or);
+      margin: 30px 0;
+    }
+
+    .apropos-valeurs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .val-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .val-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--or);
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .val-txt {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--gris);
+      line-height: 1.6;
+    }
+
+    /* ===== SOINS ===== */
+    .section-soins {
+      padding: 140px 70px;
+      background: var(--sauge3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-soins::before {
+      content: 'SOINS';
+      position: absolute;
+      right: -30px;
+      top: 60px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 180px;
+      font-weight: 700;
+      color: rgba(212, 168, 83, 0.04);
+      letter-spacing: 20px;
+      pointer-events: none;
+    }
+
+    .soins-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 70px;
+    }
+
+    .soins-head .section-title {
+      color: var(--ivoire);
+    }
+
+    .soins-head-right {
+      font-size: 14px;
+      font-weight: 200;
+      color: rgba(250, 247, 242, 0.5);
+      max-width: 300px;
+      line-height: 1.8;
+      text-align: right;
+    }
+
+    .soins-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 50px;
+      border-bottom: 1px solid rgba(250, 247, 242, 0.1);
+    }
+
+    .tab-btn {
+      padding: 14px 32px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 300;
+      color: rgba(250, 247, 242, 0.4);
+      background: none;
+      border: none;
+      cursor: none;
+      transition: all 0.3s;
+      position: relative;
+      font-family: 'Jost', sans-serif;
+    }
+
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--or);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .tab-btn.active {
+      color: var(--or);
+    }
+
+    .tab-btn.active::after {
+      transform: scaleX(1);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .soin-card {
+      background: rgba(250, 247, 242, 0.04);
+      padding: 44px 36px;
+      transition: all 0.4s;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .soin-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--or);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+
+    .soin-card:hover {
+      background: rgba(250, 247, 242, 0.07);
+    }
+
+    .soin-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .soin-num {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 56px;
+      font-weight: 400;
+      color: rgba(212, 168, 83, 0.1);
+      line-height: 1;
+      margin-bottom: 24px;
+      transition: color 0.4s;
+    }
+
+    .soin-card:hover .soin-num {
+      color: rgba(212, 168, 83, 0.25);
+    }
+
+    .soin-name {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--ivoire);
+      margin-bottom: 12px;
+    }
+
+    .soin-desc {
+      font-size: 13px;
+      font-weight: 200;
+      color: rgba(250, 247, 242, 0.5);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .soin-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .soin-duree {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gris2);
+      font-weight: 300;
+    }
+
+    .soin-prix {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 22px;
+      color: var(--or);
+      font-weight: 400;
+    }
+
+    /* ===== RESERVATION ===== */
+    .section-reservation {
+      padding: 140px 70px;
+      background: var(--ivoire2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: start;
+    }
+
+    .resa-left .section-title {
+      margin-bottom: 20px;
+    }
+
+    .resa-left>p {
+      font-size: 14px;
+      font-weight: 200;
+      color: var(--gris);
+      line-height: 1.9;
+      margin-bottom: 40px;
+    }
+
+    .resa-info-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .resa-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: var(--vert-clair);
+      padding: 20px 24px;
+    }
+
+    .resa-info-ico {
+      width: 44px;
+      height: 44px;
+      background: var(--sauge);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      color: var(--or);
+    }
+
+    .resa-info-txt strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--sauge);
+      margin-bottom: 3px;
+    }
+
+    .resa-info-txt span {
+      font-size: 12px;
+      font-weight: 200;
+      color: var(--gris);
+    }
+
+    .resa-form {
+      background: var(--sauge3);
+      padding: 52px;
+    }
+
+    .rform-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--ivoire);
+      margin-bottom: 8px;
+    }
+
+    .rform-sub {
+      font-size: 12px;
+      font-weight: 200;
+      color: var(--gris2);
+      margin-bottom: 36px;
+    }
+
+    .fg {
+      margin-bottom: 18px;
+    }
+
+    .fg label {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gris2);
+      font-weight: 300;
+      margin-bottom: 8px;
+    }
+
+    .fg input,
+    .fg select,
+    .fg textarea {
+      width: 100%;
+      background: rgba(250, 247, 242, 0.05);
+      border: 1px solid rgba(212, 168, 83, 0.2);
+      padding: 13px 16px;
+      color: var(--ivoire);
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 200;
+      outline: none;
+      transition: border-color 0.3s;
+      cursor: none;
+    }
+
+    .fg input::placeholder {
+      color: rgba(250, 247, 242, 0.3);
+    }
+
+    .fg input:focus,
+    .fg select:focus,
+    .fg textarea:focus {
+      border-color: var(--or);
+    }
+
+    .fg select option {
+      background: var(--sauge3);
+    }
+
+    .fg textarea {
+      height: 90px;
+      resize: none;
+    }
+
+    .fg textarea::placeholder {
+      color: rgba(250, 247, 242, 0.3);
+    }
+
+    .fgrow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .btn-reserve-form {
+      width: 100%;
+      background: var(--or);
+      border: none;
+      padding: 15px;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--sauge3);
+      cursor: none;
+      transition: all 0.3s;
+      margin-top: 8px;
+    }
+
+    .btn-reserve-form:hover {
+      background: var(--or-clair);
+      transform: translateY(-2px);
+    }
+
+    /* ===== TARIFS ===== */
+    .section-tarifs {
+      padding: 140px 70px;
+      background: var(--ivoire);
+    }
+
+    .tarifs-head {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .tarifs-head p {
+      font-size: 15px;
+      font-weight: 200;
+      color: var(--gris);
+      margin-top: 20px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.8;
+    }
+
+    .tarifs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .tarif-card {
+      background: var(--ivoire2);
+      border: 1px solid rgba(45, 74, 62, 0.1);
+      padding: 44px 36px;
+      position: relative;
+      transition: all 0.4s;
+      cursor: none;
+    }
+
+    .tarif-card.featured {
+      background: var(--sauge);
+      border-color: var(--sauge);
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--or);
+      color: var(--sauge3);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 18px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .tarif-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 60px rgba(45, 74, 62, 0.1);
+    }
+
+    .tarif-name {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--sauge);
+      margin-bottom: 8px;
+    }
+
+    .tarif-card.featured .tarif-name {
+      color: var(--ivoire);
+    }
+
+    .tarif-sub {
+      font-size: 12px;
+      font-weight: 200;
+      color: var(--gris);
+      margin-bottom: 30px;
+    }
+
+    .tarif-card.featured .tarif-sub {
+      color: rgba(250, 247, 242, 0.6);
+    }
+
+    .tarif-sep {
+      width: 40px;
+      height: 1px;
+      background: var(--or);
+      margin-bottom: 30px;
+    }
+
+    .tarif-list {
+      list-style: none;
+      margin-bottom: 36px;
+    }
+
+    .tarif-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 200;
+      color: var(--gris);
+      margin-bottom: 12px;
+    }
+
+    .tarif-card.featured .tarif-list li {
+      color: rgba(250, 247, 242, 0.7);
+    }
+
+    .tarif-list li::before {
+      content: '✦';
+      color: var(--or);
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .tarif-price {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 40px;
+      font-weight: 400;
+      color: var(--or);
+      line-height: 1;
+    }
+
+    .tarif-per {
+      font-size: 12px;
+      font-weight: 200;
+      color: var(--gris);
+      display: block;
+      margin-top: 6px;
+    }
+
+    .tarif-card.featured .tarif-per {
+      color: rgba(250, 247, 242, 0.5);
+    }
+
+    .btn-tarif {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      padding: 13px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 400;
+      text-decoration: none;
+      cursor: none;
+      transition: all 0.3s;
+    }
+
+    .btn-tarif-light {
+      border: 1px solid rgba(45, 74, 62, 0.3);
+      color: var(--sauge);
+    }
+
+    .btn-tarif-light:hover {
+      background: var(--sauge);
+      color: var(--ivoire);
+    }
+
+    .btn-tarif-dark {
+      background: var(--or);
+      color: var(--sauge3);
+    }
+
+    .btn-tarif-dark:hover {
+      background: var(--or-clair);
+    }
+
+    /* ===== TÉMOIGNAGES ===== */
+    .section-temoignages {
+      padding: 140px 70px;
+      background: var(--vert-clair);
+    }
+
+    .temo-head {
+      text-align: center;
+      margin-bottom: 70px;
+    }
+
+    .temo-slider {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .temo-track {
+      display: flex;
+      gap: 24px;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .temo-card {
+      background: var(--ivoire);
+      border: 1px solid rgba(45, 74, 62, 0.08);
+      padding: 44px;
+      min-width: calc(33.333% - 16px);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .temo-card::before {
+      content: '"';
+      font-family: 'Libre Baskerville', serif;
+      font-size: 100px;
+      color: rgba(212, 168, 83, 0.15);
+      position: absolute;
+      top: -10px;
+      left: 24px;
+      line-height: 1;
+    }
+
+    .temo-stars {
+      color: var(--or);
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+    }
+
+    .temo-txt {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 17px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--charcoal);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .temo-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .temo-av {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sauge2), var(--sauge));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 15px;
+      color: var(--or);
+      font-weight: 400;
+    }
+
+    .temo-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--sauge);
+      display: block;
+    }
+
+    .temo-role {
+      font-size: 11px;
+      font-weight: 200;
+      color: var(--gris);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .temo-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 50px;
+    }
+
+    .temo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(45, 74, 62, 0.2);
+      cursor: none;
+      transition: all 0.3s;
+      border: none;
+    }
+
+    .temo-dot.active {
+      background: var(--or);
+      transform: scale(1.3);
+    }
+
+    /* ===== CONTACT ===== */
+    .section-contact {
+      padding: 100px 70px;
+      background: var(--sauge3);
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+
+    .contact-left .section-title {
+      color: var(--ivoire);
+      margin-bottom: 24px;
+    }
+
+    .contact-left>p {
+      font-size: 14px;
+      font-weight: 200;
+      color: rgba(250, 247, 242, 0.6);
+      line-height: 1.9;
+      margin-bottom: 50px;
+    }
+
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .cdetail {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .cdetail-ico {
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgba(212, 168, 83, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--or);
+      flex-shrink: 0;
+    }
+
+    .cdetail-info strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ivoire);
+      margin-bottom: 3px;
+    }
+
+    .cdetail-info span {
+      font-size: 12px;
+      font-weight: 200;
+      color: rgba(250, 247, 242, 0.5);
+    }
+
+    .contact-map {
+      height: 420px;
+      background: var(--sauge2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: linear-gradient(135deg, var(--sauge2), var(--sauge3));
+      border: 1px solid rgba(212, 168, 83, 0.15);
+    }
+
+    .map-ico {
+      font-size: 48px;
+    }
+
+    .map-txt {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 18px;
+      color: var(--or);
+      font-weight: 400;
+    }
+
+    .map-sub {
+      font-size: 13px;
+      font-weight: 200;
+      color: rgba(250, 247, 242, 0.5);
+      text-align: center;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0F1F18;
+      padding: 80px 70px 36px;
+      border-top: 1px solid rgba(212, 168, 83, 0.1);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    .fbrand-logo {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 4px;
+      color: var(--ivoire);
+      display: block;
+      margin-bottom: 18px;
+      text-decoration: none;
+    }
+
+    .fbrand-logo span {
+      color: var(--or);
+    }
+
+    .fbrand-desc {
+      font-size: 13px;
+      font-weight: 200;
+      color: var(--gris);
+      line-height: 1.8;
+      max-width: 260px;
+    }
+
+    .fsocials {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .fsoc {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(212, 168, 83, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gris);
+      font-size: 12px;
+      font-weight: 300;
+      text-decoration: none;
+      cursor: none;
+      transition: all 0.3s;
+    }
+
+    .fsoc:hover {
+      border-color: var(--or);
+      color: var(--or);
+    }
+
+    .fcol h4 {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--or);
+      font-weight: 400;
+      margin-bottom: 22px;
+    }
+
+    .fcol ul {
+      list-style: none;
+    }
+
+    .fcol li {
+      margin-bottom: 10px;
+    }
+
+    .fcol li a,
+    .fcol li span {
+      color: var(--gris);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 200;
+      transition: color 0.3s;
+      cursor: none;
+    }
+
+    .fcol li a:hover {
+      color: var(--ivoire);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .fcopy,
+    .fcredit {
+      font-size: 11px;
+      font-weight: 200;
+      color: rgba(122, 122, 106, 0.5);
+    }
+
+    .fcredit span {
+      color: var(--or);
+    }
+
+    /* ===== REVEAL ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .reveal-l {
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal-l.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .reveal-r {
+      opacity: 0;
+      transform: translateX(60px);
+      transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal-r.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .d1 {
+      transition-delay: 0.1s;
+    }
+
+    .d2 {
+      transition-delay: 0.2s;
+    }
+
+    .d3 {
+      transition-delay: 0.3s;
+    }
+
+    .d4 {
+      transition-delay: 0.4s;
+    }
+
+    .d5 {
+      transition-delay: 0.5s;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes scrollAnim {
+      0% {
+        transform: scaleY(0);
+        transform-origin: top;
+        opacity: 1;
+      }
+
+      49% {
+        transform: scaleY(1);
+        transform-origin: top;
+        opacity: 1;
+      }
+
+      50% {
+        transform: scaleY(1);
+        transform-origin: bottom;
+      }
+
+      100% {
+        transform: scaleY(0);
+        transform-origin: bottom;
+        opacity: 0;
+      }
+    }
+
+    @keyframes floatLeaf {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      33% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+
+      66% {
+        transform: translateY(-10px) rotate(-3deg);
+      }
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* NOTIFICATION */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--sauge);
+      border: 1px solid rgba(212, 168, 83, 0.3);
+      padding: 18px 26px;
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.5s ease;
+      max-width: 300px;
+    }
+
+    .toast.show {
+      transform: none;
+      opacity: 1;
+    }
+
+    .toast-t {
+      color: var(--or);
+      font-size: 13px;
+      margin-bottom: 6px;
+      font-family: 'Libre Baskerville', serif;
+    }
+
+    .toast-b {
+      font-size: 12px;
+      font-weight: 200;
+      color: rgba(250, 247, 242, 0.6);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:1100px) {
+
+      .section-apropos,
+      .section-reservation,
+      .contact-inner {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+
+      .tarifs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .soins-head {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .soins-head-right {
+        text-align: left;
+      }
+
+      nav {
+        padding: 22px 30px;
+      }
+
+      .hero-content,
+      .section-apropos,
+      .section-soins,
+      .section-reservation,
+      .section-tarifs,
+      .section-temoignages,
+      .section-contact,
+      footer {
+        padding-left: 30px;
+        padding-right: 30px;
+      }
+
+      .hero-badges {
+        display: none;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media(max-width:768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero-h1 {
+        font-size: 44px;
+      }
+
+      .tab-content.active {
+        grid-template-columns: 1fr;
+      }
+
+      .temo-card {
+        min-width: calc(100% - 0px);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .fgrow {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- CURSEUR FLEUR -->
+  <div class="cursor-dot" id="cdot"></div>
+  <div class="cursor-petal" id="cp1"></div>
+  <div class="petal2" id="cp2"></div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <div class="toast-t">🌿 Offre du moment</div>
+    <div class="toast-b">Premier soin à -20% pour toute nouvelle cliente. Réservez cette semaine.</div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo" onclick="showPage('accueil');return false;">LUMIÈRE<span>·</span></a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('accueil');return false;" id="nav-accueil" class="active-link">Accueil</a></li>
+      <li><a href="#" onclick="showPage('soins');return false;" id="nav-soins">Soins</a></li>
+      <li><a href="#" onclick="showPage('tarifs');return false;" id="nav-tarifs">Tarifs</a></li>
+      <li><a href="#" onclick="showPage('temoignages');return false;" id="nav-temoignages">Avis</a></li>
+      <li><a href="#" onclick="showPage('contact');return false;" id="nav-contact">Contact</a></li>
+    </ul>
+    <a href="#" class="nav-reserve" onclick="showPage('reservation');return false;">Réserver →</a>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- PAGE ACCUEIL -->
+  <!-- ============================================================ -->
+  <div class="page active" id="page-accueil">
+    <section id="hero-section">
+      <canvas id="nature-canvas"></canvas>
+      <div class="hero-bg-img" id="heroBg"></div>
+      <div class="hero-vignette"></div>
+      <div class="hero-content">
+        <div class="hero-pretag">
+          <div class="htag-line"></div>
+          <span class="htag-txt">Bordeaux · Institut de Beauté · Bien-être</span>
+        </div>
+        <h1 class="hero-h1">Prenez soin<br>de vous. <em>Vraiment.</em></h1>
+        <p class="hero-p">
+          Institut de beauté haut de gamme à Bordeaux. Soins visage,
+          corps et épilation avec des produits bio certifiés.
+          Réservation en ligne 24h/24.
+        </p>
+        <div class="hero-btns">
+          <a href="#" class="btn-or" onclick="showPage('reservation');return false;">Réserver ma séance →</a>
+          <a href="#" class="btn-lien" onclick="showPage('soins');return false;">Découvrir nos soins</a>
+        </div>
+      </div>
+      <div class="hero-scroll">
+        <span class="hscroll-txt">Défiler</span>
+        <div class="hscroll-bar"></div>
+      </div>
+      <div class="hero-badges">
+        <div class="hbadge">
+          <span class="hbadge-num" data-count="500">0</span>
+          <span class="hbadge-lbl">Clientes satisfaites</span>
+        </div>
+        <div class="hbadge">
+          <span class="hbadge-num" data-count="8">0</span>
+          <span class="hbadge-lbl">Ans d'expertise</span>
+        </div>
+        <div class="hbadge">
+          <span class="hbadge-num" data-text="4.9★">—</span>
+          <span class="hbadge-lbl">Note Google</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- À PROPOS HOME -->
+    <div class="section-apropos">
+      <div class="apropos-img-wrap reveal-l">
+        <div class="apropos-img-frame">
+          <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&q=85" alt="Institut Lumière">
+        </div>
+        <div class="apropos-img-deco"></div>
+        <div class="apropos-badge">
+          <span class="ab-num">Bio</span>
+          <span class="ab-lbl">100% certifié</span>
+        </div>
+      </div>
+      <div class="apropos-txt reveal-r">
+        <span class="stag">✦ Notre philosophie</span>
+        <h2 class="section-title">Votre beauté,<br><em>sublimée naturellement.</em></h2>
+        <div class="apropos-sep"></div>
+        <p>Institut Lumière est né d'une conviction : la vraie beauté se révèle quand on prend soin de soi avec des
+          produits respectueux. Depuis 8 ans, Camille et son équipe accompagnent chaque cliente avec une approche 100%
+          personnalisée.</p>
+        <p>Chaque soin commence par une analyse de votre peau. Parce que vous êtes unique, et votre soin doit l'être
+          aussi.</p>
+        <div class="apropos-valeurs">
+          <div class="val-item">
+            <div class="val-dot"></div><span class="val-txt">Produits bio certifiés Ecocert</span>
+          </div>
+          <div class="val-item">
+            <div class="val-dot"></div><span class="val-txt">Soins 100% personnalisés</span>
+          </div>
+          <div class="val-item">
+            <div class="val-dot"></div><span class="val-txt">Résultats dès la 1ère séance</span>
+          </div>
+          <div class="val-item">
+            <div class="val-dot"></div><span class="val-txt">Réservation en ligne 24h/24</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOINS PHARES HOME -->
+    <div class="section-soins">
+      <div class="soins-head">
+        <div>
+          <span class="stag">✦ Nos soins signatures</span>
+          <h2 class="section-title" style="color:var(--ivoire)">Ce que nous<br>faisons pour vous.</h2>
+        </div>
+        <p class="soins-head-right">Chaque soin est pensé pour vous apporter des résultats visibles, durables et
+          respectueux de votre peau.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+        <div class="soin-card reveal d1">
+          <div class="soin-num">01</div>
+          <div class="soin-name">Soin Visage Éclat</div>
+          <p class="soin-desc">Notre soin phare. Nettoyage profond, sérum vitamine C, masque hydratant. Peau lumineuse
+            en 75 minutes.</p>
+          <div class="soin-footer">
+            <span class="soin-duree">75 min</span>
+            <span class="soin-prix">95€</span>
+          </div>
+        </div>
+        <div class="soin-card reveal d2">
+          <div class="soin-num">02</div>
+          <div class="soin-name">Massage Bien-être</div>
+          <p class="soin-desc">Massage relaxant aux huiles essentielles bio. Tensions, stress et fatigue disparaissent
+            en une séance.</p>
+          <div class="soin-footer">
+            <span class="soin-duree">60 min</span>
+            <span class="soin-prix">80€</span>
+          </div>
+        </div>
+        <div class="soin-card reveal d3">
+          <div class="soin-num">03</div>
+          <div class="soin-name">Épilation Orientale</div>
+          <p class="soin-desc">Technique ancestrale au sucre naturel. Moins douloureuse, résultat durable, sans produit
+            chimique.</p>
+          <div class="soin-footer">
+            <span class="soin-duree">45–60 min</span>
+            <span class="soin-prix">55€</span>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:50px;" class="reveal">
+        <a href="#" class="btn-or" onclick="showPage('soins');return false;" style="display:inline-block;">Voir tous nos
+          soins →</a>
+      </div>
+    </div>
+
+    <!-- TEMOIGNAGES HOME -->
+    <div style="padding:100px 70px;background:var(--vert-clair);">
+      <div style="text-align:center;margin-bottom:60px;" class="reveal">
+        <span class="stag">✦ Ce qu'elles disent</span>
+        <h2 class="section-title">Elles reviennent chaque mois.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+        <div class="temo-card reveal d1"
+          style="background:var(--ivoire);border:1px solid rgba(45,74,62,0.08);padding:36px;position:relative;">
+          <div style="color:var(--or);font-size:13px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+          <p
+            style="font-family:'Libre Baskerville',serif;font-size:16px;font-style:italic;color:var(--charcoal);line-height:1.7;margin-bottom:24px;">
+            "Le soin Éclat Lumière a transformé ma peau en 3 séances. Mon dermatologue l'a remarqué."</p>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div
+              style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--sauge2),var(--sauge));display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-size:14px;color:var(--or);">
+              IF</div>
+            <div><span style="font-size:13px;font-weight:500;color:var(--sauge);display:block;">Isabelle F.</span><span
+                style="font-size:11px;font-weight:200;color:var(--gris);">Bordeaux · Cliente fidèle</span></div>
+          </div>
+        </div>
+        <div class="temo-card reveal d2"
+          style="background:var(--ivoire);border:1px solid rgba(45,74,62,0.08);padding:36px;position:relative;">
+          <div style="color:var(--or);font-size:13px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+          <p
+            style="font-family:'Libre Baskerville',serif;font-size:16px;font-style:italic;color:var(--charcoal);line-height:1.7;margin-bottom:24px;">
+            "Je prends RDV directement en ligne. C'est pratique, rapide, et je n'attends jamais."</p>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div
+              style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--sauge2),var(--sauge));display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-size:14px;color:var(--or);">
+              NG</div>
+            <div><span style="font-size:13px;font-weight:500;color:var(--sauge);display:block;">Nathalie G.</span><span
+                style="font-size:11px;font-weight:200;color:var(--gris);">Mérignac · 2 ans de fidélité</span></div>
+          </div>
+        </div>
+        <div class="temo-card reveal d3"
+          style="background:var(--ivoire);border:1px solid rgba(45,74,62,0.08);padding:36px;position:relative;">
+          <div style="color:var(--or);font-size:13px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+          <p
+            style="font-family:'Libre Baskerville',serif;font-size:16px;font-style:italic;color:var(--charcoal);line-height:1.7;margin-bottom:24px;">
+            "Camille prend le temps d'analyser votre peau. C'est du vrai sur-mesure, pas un soin à la chaîne."</p>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div
+              style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--sauge2),var(--sauge));display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-size:14px;color:var(--or);">
+              MC</div>
+            <div><span style="font-size:13px;font-weight:500;color:var(--sauge);display:block;">Marie-Claire
+                D.</span><span style="font-size:11px;font-weight:200;color:var(--gris);">Bordeaux Chartrons</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA HOME -->
+    <div style="padding:100px 70px;background:var(--sauge);text-align:center;">
+      <span class="stag" style="text-align:center;">✦ Réservation</span>
+      <h2 class="section-title reveal" style="color:var(--ivoire);margin-bottom:20px;">Votre peau vous
+        <em>remerciera.</em></h2>
+      <p class="reveal"
+        style="font-size:15px;font-weight:200;color:rgba(250,247,242,0.65);margin-bottom:40px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.8;">
+        Réservez votre premier soin. Annulation gratuite jusqu'à 24h avant. Aucun risque.</p>
+      <a href="#" class="btn-or reveal" onclick="showPage('reservation');return false;"
+        style="display:inline-block;">Réserver en ligne →</a>
+    </div>
+
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="fbrand-logo" onclick="showPage('accueil');return false;">LUMIÈRE<span>·</span></a>
+          <p class="fbrand-desc">Institut de beauté haut de gamme à Bordeaux. Soins bio, sur-mesure, pour chaque
+            cliente.</p>
+          <div class="fsocials">
+            <a href="#" class="fsoc">IG</a><a href="#" class="fsoc">FB</a><a href="#" class="fsoc">G</a>
+          </div>
+        </div>
+        <div class="fcol">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('accueil');return false;">Accueil</a></li>
+            <li><a href="#" onclick="showPage('soins');return false;">Soins</a></li>
+            <li><a href="#" onclick="showPage('tarifs');return false;">Tarifs</a></li>
+            <li><a href="#" onclick="showPage('temoignages');return false;">Avis</a></li>
+            <li><a href="#" onclick="showPage('reservation');return false;">Réserver</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h4>Horaires</h4>
+          <ul>
+            <li><span>Mardi – Vendredi</span></li>
+            <li><span>9h00 – 19h00</span></li>
+            <li><span>Samedi</span></li>
+            <li><span>9h00 – 17h00</span></li>
+            <li><span>Dim. & Lun. : Fermé</span></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="#">12 rue des Fleurs, Bordeaux</a></li>
+            <li><a href="#">+33 5 XX XX XX XX</a></li>
+            <li><a href="#">contact@institut-lumiere.fr</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="fcopy">© 2026 Institut Lumière · Tous droits réservés</p>
+        <p class="fcredit">Site réalisé par <span>Palmstark</span></p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PAGE SOINS -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-soins">
+    <div style="height:100px;background:var(--sauge3);"></div>
+    <div class="section-soins" style="padding-top:80px;">
+      <div class="soins-head reveal">
+        <div>
+          <span class="stag">✦ Catalogue complet</span>
+          <h2 class="section-title" style="color:var(--ivoire)">Tous nos soins,<br>pour chaque besoin.</h2>
+        </div>
+        <p class="soins-head-right">Des soins pensés pour chaque type de peau et chaque moment de votre vie.
+          Consultation offerte avant chaque première prestation.</p>
+      </div>
+      <div class="soins-tabs">
+        <button class="tab-btn active" onclick="switchTab('visage',this)">Soins Visage</button>
+        <button class="tab-btn" onclick="switchTab('corps',this)">Soins Corps</button>
+        <button class="tab-btn" onclick="switchTab('epilation',this)">Épilation</button>
+      </div>
+      <div class="tab-content active" id="tab-visage">
+        <div class="soin-card">
+          <div class="soin-num">01</div>
+          <div class="soin-name">Soin Éclat Lumière</div>
+          <p class="soin-desc">Notre soin signature. Nettoyage profond, peeling doux, sérum vitamine C bio, masque
+            hydratant sur mesure. Résultat immédiat.</p>
+          <div class="soin-footer"><span class="soin-duree">75 min</span><span class="soin-prix">95€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">02</div>
+          <div class="soin-name">Soin Anti-Âge</div>
+          <p class="soin-desc">Acides hyaluroniques naturels, rétinol végétal, massage lifting. Réduit les rides et
+            redensifie la peau durablement.</p>
+          <div class="soin-footer"><span class="soin-duree">90 min</span><span class="soin-prix">120€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">03</div>
+          <div class="soin-name">Soin Purifiant</div>
+          <p class="soin-desc">Idéal pour les peaux à tendance acnéique. Nettoyage profond, extraction, sérum zinc et
+            niacinamide bio. Peau nette et apaisée.</p>
+          <div class="soin-footer"><span class="soin-duree">60 min</span><span class="soin-prix">80€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">04</div>
+          <div class="soin-name">Soin Hydratant</div>
+          <p class="soin-desc">Pour les peaux sèches et sensibles. Masque repulpant à l'aloe vera bio et acide
+            hyaluronique. Confort immédiat et durable.</p>
+          <div class="soin-footer"><span class="soin-duree">60 min</span><span class="soin-prix">75€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">05</div>
+          <div class="soin-name">Soin Éclat Naturel</div>
+          <p class="soin-desc">Gommage doux aux sucres naturels, masque argile verte, sérum vit. C. Teint unifié et
+            lumineux en une séance.</p>
+          <div class="soin-footer"><span class="soin-duree">45 min</span><span class="soin-prix">65€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">06</div>
+          <div class="soin-name">Consultation Peau</div>
+          <p class="soin-desc">Analyse complète de votre peau par notre experte. Diagnostic personnalisé et protocole de
+            soins adapté. Offerte pour toute nouvelle cliente.</p>
+          <div class="soin-footer"><span class="soin-duree">30 min</span><span class="soin-prix">Offerte</span></div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-corps">
+        <div class="soin-card">
+          <div class="soin-num">01</div>
+          <div class="soin-name">Massage Relaxant</div>
+          <p class="soin-desc">Massage corps complet aux huiles essentielles bio lavande et eucalyptus. Tension, stress
+            et fatigue disparaissent en 60 minutes.</p>
+          <div class="soin-footer"><span class="soin-duree">60 min</span><span class="soin-prix">80€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">02</div>
+          <div class="soin-name">Enveloppement Détox</div>
+          <p class="soin-desc">Gommage corps aux sels de mer, enveloppement au beurre de karité et argile verte. Peau
+            lisse et régénérée dès la première séance.</p>
+          <div class="soin-footer"><span class="soin-duree">75 min</span><span class="soin-prix">95€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">03</div>
+          <div class="soin-name">Massage Drainant</div>
+          <p class="soin-desc">Technique de drainage lymphatique manual pour réduire la rétention d'eau et les jambes
+            lourdes. Soulagement immédiat.</p>
+          <div class="soin-footer"><span class="soin-duree">60 min</span><span class="soin-prix">85€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">04</div>
+          <div class="soin-name">Soin Mains & Pieds</div>
+          <p class="soin-desc">Bain, gommage, masque nourrissant et massage relaxant des mains et des pieds. Résultat
+            doux et hydraté.</p>
+          <div class="soin-footer"><span class="soin-duree">45 min</span><span class="soin-prix">55€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">05</div>
+          <div class="soin-name">Forfait Détente Total</div>
+          <p class="soin-desc">Soin visage éclat + massage corps complet + soin mains. L'expérience bien-être ultime
+            pour se ressourcer pleinement.</p>
+          <div class="soin-footer"><span class="soin-duree">2h30</span><span class="soin-prix">220€</span></div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-epilation">
+        <div class="soin-card">
+          <div class="soin-num">01</div>
+          <div class="soin-name">Jambes Complètes</div>
+          <p class="soin-desc">Épilation à la pâte de sucre naturelle. Moins douloureuse que la cire classique, résultat
+            qui dure 3 à 5 semaines.</p>
+          <div class="soin-footer"><span class="soin-duree">45 min</span><span class="soin-prix">55€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">02</div>
+          <div class="soin-name">Demi-Jambes</div>
+          <p class="soin-desc">Épilation orientale demi-jambes. Technique ancestrale au sucre, sans produit chimique.
+          </p>
+          <div class="soin-footer"><span class="soin-duree">30 min</span><span class="soin-prix">35€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">03</div>
+          <div class="soin-name">Maillot Intégral</div>
+          <p class="soin-desc">Épilation complète au sucre naturel. Résultat précis et durable. Adapté aux peaux
+            sensibles.</p>
+          <div class="soin-footer"><span class="soin-duree">30 min</span><span class="soin-prix">40€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">04</div>
+          <div class="soin-name">Aisselles</div>
+          <p class="soin-desc">Épilation orientale des aisselles. Technique douce et efficace. Résultat net et durable.
+          </p>
+          <div class="soin-footer"><span class="soin-duree">15 min</span><span class="soin-prix">18€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">05</div>
+          <div class="soin-name">Visage complet</div>
+          <p class="soin-desc">Lèvre supérieure, sourcils, joues. Épilation de précision pour un visage parfaitement
+            net.</p>
+          <div class="soin-footer"><span class="soin-duree">20 min</span><span class="soin-prix">25€</span></div>
+        </div>
+        <div class="soin-card">
+          <div class="soin-num">06</div>
+          <div class="soin-name">Forfait Total Corps</div>
+          <p class="soin-desc">Jambes complètes + maillot intégral + aisselles + sourcils. Tout inclus, tarif
+            avantageux.</p>
+          <div class="soin-footer"><span class="soin-duree">75 min</span><span class="soin-prix">120€</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:70px;background:var(--sauge);text-align:center;">
+      <h2 class="section-title" style="color:var(--ivoire);margin-bottom:30px;">Vous ne savez pas quel soin choisir ?
+      </h2>
+      <a href="#" class="btn-or" onclick="showPage('reservation');return false;"
+        style="display:inline-block;">Consultation gratuite de 30 min →</a>
+    </div>
+    <footer style="background:#0F1F18;padding:50px 70px 30px;border-top:1px solid rgba(212,168,83,0.1);">
+      <div class="footer-bottom" style="border:none;padding:0;">
+        <p class="fcopy">© 2026 Institut Lumière · Bordeaux</p>
+        <p class="fcredit">Site réalisé par <span>Palmstark</span></p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PAGE TARIFS -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-tarifs">
+    <div style="height:100px;background:var(--sauge3);"></div>
+    <div class="section-tarifs">
+      <div class="tarifs-head reveal">
+        <span class="stag">✦ Nos tarifs</span>
+        <h2 class="section-title">Transparence totale,<br><em>zéro surprise.</em></h2>
+        <p>Choisissez la formule qui vous correspond. Tous nos soins incluent la consultation personnalisée, les
+          produits bio et le conseil de notre experte.</p>
+      </div>
+      <div class="tarifs-grid">
+        <div class="tarif-card reveal d1">
+          <div class="tarif-name">Découverte</div>
+          <div class="tarif-sub">Pour essayer sereinement</div>
+          <div class="tarif-sep"></div>
+          <ul class="tarif-list">
+            <li>1 soin visage au choix</li>
+            <li>Consultation skin offerte</li>
+            <li>Produits bio certifiés</li>
+            <li>Conseils beauté personnalisés</li>
+          </ul>
+          <div class="tarif-price">75€ <span class="tarif-per">à partir de · par séance</span></div>
+          <a href="#" class="btn-tarif btn-tarif-light" onclick="showPage('reservation');return false;">Choisir
+            Découverte</a>
+        </div>
+        <div class="tarif-card featured reveal d2">
+          <div class="featured-badge">⭐ Le plus choisi</div>
+          <div class="tarif-name">Bien-être</div>
+          <div class="tarif-sub" style="color:rgba(250,247,242,0.6);">Pour les clientes régulières</div>
+          <div class="tarif-sep"></div>
+          <ul class="tarif-list">
+            <li>Accès à tous nos soins visage</li>
+            <li>1 massage corps / mois inclus</li>
+            <li>Consultation priority</li>
+            <li>Produits premium Sisley</li>
+            <li>-10% sur l'épilation</li>
+          </ul>
+          <div class="tarif-price" style="color:var(--or);">149€ <span class="tarif-per">par mois · sans
+              engagement</span></div>
+          <a href="#" class="btn-tarif btn-tarif-dark" onclick="showPage('reservation');return false;">Choisir
+            Bien-être</a>
+        </div>
+        <div class="tarif-card reveal d3">
+          <div class="tarif-name">Excellence</div>
+          <div class="tarif-sub">L'expérience complète</div>
+          <div class="tarif-sep"></div>
+          <ul class="tarif-list">
+            <li>Tous les soins illimités</li>
+            <li>Massages corps illimités</li>
+            <li>Épilation incluse</li>
+            <li>Produits Sisley exclusifs</li>
+            <li>RDV prioritaire 24h</li>
+            <li>Accès soins premium</li>
+          </ul>
+          <div class="tarif-price">249€ <span class="tarif-per">par mois · sans engagement</span></div>
+          <a href="#" class="btn-tarif btn-tarif-light" onclick="showPage('reservation');return false;">Choisir
+            Excellence</a>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:70px;padding:50px;background:var(--vert-clair);" class="reveal">
+        <span class="stag">✦ Carte cadeau</span>
+        <h3
+          style="font-family:'Libre Baskerville',serif;font-size:28px;font-weight:400;color:var(--sauge);margin-bottom:16px;">
+          Offrez un moment de bien-être.</h3>
+        <p style="font-size:14px;font-weight:200;color:var(--gris);margin-bottom:30px;">Disponibles en boutique et en
+          ligne. Valables 1 an sur tous nos soins.</p>
+        <a href="#" class="btn-or" onclick="showPage('contact');return false;" style="display:inline-block;">Demander
+          une carte cadeau →</a>
+      </div>
+    </div>
+    <footer style="background:#0F1F18;padding:50px 70px 30px;border-top:1px solid rgba(212,168,83,0.1);">
+      <div class="footer-bottom" style="border:none;padding:0;">
+        <p class="fcopy">© 2026 Institut Lumière · Bordeaux</p>
+        <p class="fcredit">Site réalisé par <span>Palmstark</span></p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PAGE TÉMOIGNAGES -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-temoignages">
+    <div style="height:100px;background:var(--sauge3);"></div>
+    <div class="section-temoignages" style="padding-top:80px;">
+      <div class="temo-head reveal">
+        <span class="stag">✦ Avis clients</span>
+        <h2 class="section-title">Elles parlent mieux que nous.</h2>
+      </div>
+      <div class="temo-slider">
+        <div class="temo-track" id="temoTrack">
+          <div class="temo-card">
+            <div class="temo-stars">★★★★★</div>
+            <p class="temo-txt">"Le soin Éclat Lumière a transformé ma peau en 3 séances. Mon dermatologue l'a remarqué.
+              Je ne jure que par Institut Lumière maintenant."</p>
+            <div class="temo-author">
+              <div class="temo-av">IF</div>
+              <div><span class="temo-name">Isabelle F.</span><span class="temo-role">Bordeaux · Soin visage</span></div>
+            </div>
+          </div>
+          <div class="temo-card">
+            <div class="temo-stars">★★★★★</div>
+            <p class="temo-txt">"Je prends RDV directement en ligne. C'est pratique, rapide, et je n'attends jamais.
+              L'équipe est aux petits soins, c'est un vrai moment de plaisir."</p>
+            <div class="temo-author">
+              <div class="temo-av">NG</div>
+              <div><span class="temo-name">Nathalie G.</span><span class="temo-role">Mérignac · Abonnement
+                  Bien-être</span></div>
+            </div>
+          </div>
+          <div class="temo-card">
+            <div class="temo-stars">★★★★★</div>
+            <p class="temo-txt">"Camille prend le temps d'analyser votre peau avant chaque soin. C'est du vrai
+              sur-mesure. Je le recommande à toutes mes amies."</p>
+            <div class="temo-author">
+              <div class="temo-av">MC</div>
+              <div><span class="temo-name">Marie-Claire D.</span><span class="temo-role">Bordeaux Chartrons · Cliente 5
+                  ans</span></div>
+            </div>
+          </div>
+          <div class="temo-card">
+            <div class="temo-stars">★★★★★</div>
+            <p class="temo-txt">"L'épilation orientale est une révélation. Beaucoup moins douloureuse que la cire, et
+              les résultats durent bien plus longtemps. Je ne reviendrai pas en arrière."</p>
+            <div class="temo-author">
+              <div class="temo-av">SL</div>
+              <div><span class="temo-name">Sophie L.</span><span class="temo-role">Pessac · Épilation</span></div>
+            </div>
+          </div>
+          <div class="temo-card">
+            <div class="temo-stars">★★★★★</div>
+            <p class="temo-txt">"J'ai offert une carte cadeau à ma mère. Elle a adoré. Le forfait Bien-être est un vrai
+              luxe accessible. Cadeau parfait pour toutes les occasions."</p>
+            <div class="temo-author">
+              <div class="temo-av">AL</div>
+              <div><span class="temo-name">Anaïs L.</span><span class="temo-role">Bordeaux · Carte cadeau</span></div>
+            </div>
+          </div>
+          <div class="temo-card">
+            <div class="temo-stars">★★★★★</div>
+            <p class="temo-txt">"Les produits bio font vraiment la différence. Ma peau n'a jamais été aussi bien. En
+              plus, l'ambiance de l'institut est absolument magnifique."</p>
+            <div class="temo-author">
+              <div class="temo-av">EV</div>
+              <div><span class="temo-name">Emma V.</span><span class="temo-role">Talence · Abonnement Excellence</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="temo-controls">
+        <button class="temo-dot active" onclick="goSlide(0)"></button>
+        <button class="temo-dot" onclick="goSlide(1)"></button>
+        <button class="temo-dot" onclick="goSlide(2)"></button>
+        <button class="temo-dot" onclick="goSlide(3)"></button>
+        <button class="temo-dot" onclick="goSlide(4)"></button>
+        <button class="temo-dot" onclick="goSlide(5)"></button>
+      </div>
+    </div>
+    <div style="padding:70px;background:var(--sauge);text-align:center;">
+      <h2 class="section-title" style="color:var(--ivoire);margin-bottom:30px;">Prête à vivre l'expérience Lumière ?
+      </h2>
+      <a href="#" class="btn-or" onclick="showPage('reservation');return false;" style="display:inline-block;">Réserver
+        ma première séance →</a>
+    </div>
+    <footer style="background:#0F1F18;padding:50px 70px 30px;border-top:1px solid rgba(212,168,83,0.1);">
+      <div class="footer-bottom" style="border:none;padding:0;">
+        <p class="fcopy">© 2026 Institut Lumière · Bordeaux</p>
+        <p class="fcredit">Site réalisé par <span>Palmstark</span></p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PAGE RÉSERVATION -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-reservation">
+    <div style="height:100px;background:var(--sauge3);"></div>
+    <div class="section-reservation" style="padding-top:80px;">
+      <div class="resa-left reveal-l">
+        <span class="stag">✦ Réservation en ligne</span>
+        <h2 class="section-title">Choisissez votre<br><em>moment de bien-être.</em></h2>
+        <p>Réservez en 2 minutes. Nous confirmons votre rendez-vous sous 1h. Consultation de 15 min offerte avant chaque
+          première prestation.</p>
+        <div class="resa-info-cards">
+          <div class="resa-info">
+            <div class="resa-info-ico">📍</div>
+            <div class="resa-info-txt"><strong>12 rue des Fleurs, Bordeaux 33000</strong><span>À 5 min à pied du centre
+                Bordeaux</span></div>
+          </div>
+          <div class="resa-info">
+            <div class="resa-info-ico">📞</div>
+            <div class="resa-info-txt"><strong>+33 5 XX XX XX XX</strong><span>Lun–Sam · 9h–19h</span></div>
+          </div>
+          <div class="resa-info">
+            <div class="resa-info-ico">🕐</div>
+            <div class="resa-info-txt"><strong>Mar–Ven : 9h–19h · Sam : 9h–17h</strong><span>Fermé dimanche et
+                lundi</span></div>
+          </div>
+          <div class="resa-info">
+            <div class="resa-info-ico">✦</div>
+            <div class="resa-info-txt"><strong>Annulation gratuite 24h avant</strong><span>Aucun frais si vous annulez à
+                temps</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="resa-form reveal-r">
+        <div class="rform-title">Demander un rendez-vous</div>
+        <div class="rform-sub">Confirmation sous 1h · Lundi–Samedi</div>
+        <form id="resaForm">
+          <div class="fgrow">
+            <div class="fg"><label>Prénom</label><input type="text" placeholder="Isabelle" required></div>
+            <div class="fg"><label>Nom</label><input type="text" placeholder="Fernandez" required></div>
+          </div>
+          <div class="fg"><label>Email</label><input type="email" placeholder="isabelle@email.com" required></div>
+          <div class="fg"><label>Téléphone</label><input type="tel" placeholder="+33 6 XX XX XX XX"></div>
+          <div class="fg">
+            <label>Soin souhaité</label>
+            <select>
+              <option>Soin Visage Éclat — 95€</option>
+              <option>Soin Anti-Âge — 120€</option>
+              <option>Massage Relaxant — 80€</option>
+              <option>Épilation Jambes Complètes — 55€</option>
+              <option>Forfait Détente Total — 220€</option>
+              <option>Consultation gratuite (15 min)</option>
+            </select>
+          </div>
+          <div class="fg"><label>Jour préféré</label><input type="date"></div>
+          <div class="fg"><label>Message (optionnel)</label><textarea
+              placeholder="Précisions sur votre peau, vos attentes, questions..."></textarea></div>
+          <button type="submit" class="btn-reserve-form">Envoyer ma demande →</button>
+        </form>
+      </div>
+    </div>
+    <footer style="background:#0F1F18;padding:50px 70px 30px;border-top:1px solid rgba(212,168,83,0.1);">
+      <div class="footer-bottom" style="border:none;padding:0;">
+        <p class="fcopy">© 2026 Institut Lumière · Bordeaux</p>
+        <p class="fcredit">Site réalisé par <span>Palmstark</span></p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PAGE CONTACT -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-contact">
+    <div style="height:100px;background:var(--sauge3);"></div>
+    <div class="section-contact" style="padding-top:80px;">
+      <div class="contact-inner">
+        <div class="contact-left reveal-l">
+          <span class="stag">✦ Nous trouver</span>
+          <h2 class="section-title">Venez nous rendre<br><em>visite.</em></h2>
+          <p>Installée au cœur de Bordeaux depuis 8 ans. Un espace pensé pour votre bien-être, votre sérénité, votre
+            beauté.</p>
+          <div class="contact-details">
+            <div class="cdetail">
+              <div class="cdetail-ico">📍</div>
+              <div class="cdetail-info"><strong>12 rue des Fleurs</strong><span>Bordeaux 33000 · France</span></div>
+            </div>
+            <div class="cdetail">
+              <div class="cdetail-ico">📞</div>
+              <div class="cdetail-info"><strong>+33 5 XX XX XX XX</strong><span>Lundi–Samedi · 9h–19h</span></div>
+            </div>
+            <div class="cdetail">
+              <div class="cdetail-ico">✉</div>
+              <div class="cdetail-info"><strong>contact@institut-lumiere.fr</strong><span>Réponse sous 24h</span></div>
+            </div>
+            <div class="cdetail">
+              <div class="cdetail-ico">🕐</div>
+              <div class="cdetail-info"><strong>Horaires</strong><span>Mar–Ven : 9h–19h · Sam : 9h–17h</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-map reveal-r">
+          <div class="map-placeholder">
+            <div class="map-ico">📍</div>
+            <div class="map-txt">Institut Lumière</div>
+            <div class="map-sub">12 rue des Fleurs<br>Bordeaux, 33000</div>
+            <a href="#" class="btn-or" style="display:inline-block;margin-top:20px;">Voir sur Google Maps →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="fbrand-logo" onclick="showPage('accueil');return false;">LUMIÈRE<span>·</span></a>
+          <p class="fbrand-desc">Institut de beauté haut de gamme à Bordeaux. Soins bio, sur-mesure, pour chaque
+            cliente.</p>
+          <div class="fsocials"><a href="#" class="fsoc">IG</a><a href="#" class="fsoc">FB</a><a href="#"
+              class="fsoc">G</a></div>
+        </div>
+        <div class="fcol">
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('accueil');return false;">Accueil</a></li>
+            <li><a href="#" onclick="showPage('soins');return false;">Soins</a></li>
+            <li><a href="#" onclick="showPage('tarifs');return false;">Tarifs</a></li>
+            <li><a href="#" onclick="showPage('reservation');return false;">Réserver</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h4>Horaires</h4>
+          <ul>
+            <li><span>Mar–Ven : 9h–19h</span></li>
+            <li><span>Samedi : 9h–17h</span></li>
+            <li><span>Dim. & Lun. : Fermé</span></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="#">12 rue des Fleurs, Bordeaux</a></li>
+            <li><a href="#">+33 5 XX XX XX XX</a></li>
+            <li><a href="#">contact@institut-lumiere.fr</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="fcopy">© 2026 Institut Lumière · Tous droits réservés</p>
+        <p class="fcredit">Site réalisé par <span>Palmstark</span></p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // CURSEUR FLEUR
+    const cdot = document.getElementById('cdot');
+    const cp1 = document.getElementById('cp1');
+    const cp2 = document.getElementById('cp2');
+    let mx = 0, my = 0, p1x = 0, p1y = 0, p2x = 0, p2y = 0;
+    let angle = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cdot.style.left = mx - 2.5 + 'px'; cdot.style.top = my - 2.5 + 'px'; });
+    function animCursor() {
+      p1x += (mx - p1x - 10) * 0.09; p1y += (my - p1y - 10) * 0.09;
+      p2x += (mx - p2x - 10) * 0.06; p2y += (my - p2y - 10) * 0.06;
+      angle += 2;
+      cp1.style.left = p1x + 'px'; cp1.style.top = p1y + 'px';
+      cp1.style.transform = `rotate(${angle}deg)`;
+      cp2.style.left = p2x + 'px'; cp2.style.top = p2y + 'px';
+      cp2.style.transform = `rotate(${angle * 0.7 + 45}deg)`;
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
+    document.querySelectorAll('a,button,.soin-card,.tarif-card,.temo-card,.resa-info').forEach(el => {
+      el.addEventListener('mouseenter', () => { cp1.classList.add('big'); cp2.classList.add('big'); });
+      el.addEventListener('mouseleave', () => { cp1.classList.remove('big'); cp2.classList.remove('big'); });
+    });
+
+    // PAGE SYSTEM
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + id).classList.add('active');
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
+      const navEl = document.getElementById('nav-' + id);
+      if (navEl) navEl.classList.add('active-link');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(initReveals, 100);
+      // Re-init canvas if accueil
+      if (id === 'accueil') setTimeout(initCanvas, 200);
+    }
+
+    // NAV SCROLL
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', scrollY > 60);
+    });
+
+    // CANVAS FEUILLES FLOTTANTES
+    function initCanvas() {
+      const canvas = document.getElementById('nature-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const leaves = Array.from({ length: 25 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: -Math.random() * 0.3 - 0.1,
+        rot: Math.random() * 360,
+        rotV: (Math.random() - 0.5) * 1.2,
+        size: Math.random() * 8 + 4,
+        op: Math.random() * 0.2 + 0.05
+      }));
+      function drawLeaf(ctx, x, y, size, rot, op) {
+        ctx.save(); ctx.translate(x, y); ctx.rotate(rot * Math.PI / 180);
+        ctx.globalAlpha = op;
+        ctx.fillStyle = 'rgba(212,168,83,1)';
+        ctx.beginPath();
+        ctx.moveTo(0, -size);
+        ctx.bezierCurveTo(size * 0.8, -size * 0.5, size * 0.8, size * 0.5, 0, size);
+        ctx.bezierCurveTo(-size * 0.8, size * 0.5, -size * 0.8, -size * 0.5, 0, -size);
+        ctx.fill();
+        ctx.restore();
+      }
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        leaves.forEach(l => {
+          drawLeaf(ctx, l.x, l.y, l.size, l.rot, l.op);
+          l.x += l.vx + Math.sin(Date.now() / 2000 + l.y) * 0.2;
+          l.y += l.vy; l.rot += l.rotV;
+          if (l.y < -20) { l.y = canvas.height + 20; l.x = Math.random() * canvas.width; }
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+      window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    }
+    initCanvas();
+
+    // HERO PARALLAX
+    window.addEventListener('scroll', () => {
+      const hc = document.querySelector('.hero-content');
+      const hb = document.getElementById('heroBg');
+      if (hc && scrollY < window.innerHeight) {
+        hc.style.transform = `translateY(${scrollY * 0.28}px)`;
+        hc.style.opacity = 1 - scrollY / 650;
+        if (hb) hb.style.transform = `scale(1.05) translateY(${scrollY * 0.1}px)`;
+      }
+    });
+
+    // HERO BG ZOOM
+    const heroBg = document.getElementById('heroBg');
+    if (heroBg) setTimeout(() => { heroBg.style.transform = 'scale(1)'; }, 100);
+
+    // COUNTERS
+    function runCounters() {
+      document.querySelectorAll('[data-count]').forEach(el => {
+        const t = parseInt(el.dataset.count); let c = 0;
+        const timer = setInterval(() => { c += t / 60; if (c >= t) { el.textContent = t + '+'; clearInterval(timer); } else el.textContent = Math.floor(c); }, 20);
+      });
+      document.querySelectorAll('[data-text]').forEach(el => { el.textContent = el.dataset.text; });
+    }
+    setTimeout(runCounters, 1200);
+
+    // SCROLL REVEAL
+    function initReveals() {
+      const els = document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
+      const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(el => { el.classList.remove('visible'); obs.observe(el); });
+    }
+    initReveals();
+
+    // TABS SOINS
+    function switchTab(id, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // SLIDER TÉMOIGNAGES
+    let slideIdx = 0;
+    function goSlide(i) {
+      slideIdx = i;
+      const track = document.getElementById('temoTrack');
+      if (!track) return;
+      const w = track.children[0].offsetWidth + 24;
+      track.style.transform = `translateX(-${i * w}px)`;
+      document.querySelectorAll('.temo-dot').forEach((d, j) => d.classList.toggle('active', j === i));
+    }
+    setInterval(() => {
+      const track = document.getElementById('temoTrack');
+      if (!track) return;
+      const max = track.children.length - 1;
+      goSlide(slideIdx >= max ? 0 : slideIdx + 1);
+    }, 4000);
+
+    // FORMS
+    document.getElementById('resaForm') && document.getElementById('resaForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const btn = this.querySelector('.btn-reserve-form');
+      btn.textContent = '✓ Demande reçue — Confirmation sous 1h';
+      btn.style.background = '#2D4A3E'; btn.style.color = '#FAF7F2';
+      setTimeout(() => { btn.textContent = 'Envoyer ma demande →'; btn.style.background = ''; btn.style.color = ''; this.reset(); }, 4000);
+    });
+
+    // TOAST
+    setTimeout(() => {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 5500);
+    }, 3500);
+
+    // SMOOTH SCROLL interne
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+  </script>
+</body>
+
+</html>
